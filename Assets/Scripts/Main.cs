@@ -41,18 +41,19 @@ public class Main : MonoBehaviour
         float x = player.velocity.x;
 
         // Comprobamos que animación hay que utilizar
-        if (y > 0)
+        if (y > 0.5)
         {
             TransitionTo(Animations.Jump, "Player_jump");
         }
-        else if (y < 0)
+        else if (y < -0.5)
         {
             TransitionTo(Animations.Fall, "Player_fall");
         }
         else if (x != 0)
         {
             TransitionTo(Animations.Run, "Player_run");
-            if (x > 0) {
+            if (x > 0)
+            {
                 spriteRenderer.flipX = false;
             }
             else
