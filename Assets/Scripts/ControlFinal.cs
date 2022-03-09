@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Cerrar : MonoBehaviour
+using UnityEngine.UI;
+public class ControlFinal : MonoBehaviour
 {
     ChangeEscene cambioEscena;
 
