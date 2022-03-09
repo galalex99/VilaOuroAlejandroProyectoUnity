@@ -17,11 +17,22 @@ public class Main : MonoBehaviour
         Jump,
         Fall
     }
+    // Animación que esta sucedendo ahora mismo
+    private Animations currentAnimation;
+    //rigid body do xogador
+    private Rigidbody2D player;
+    // animator
+    private Animator animator;               
+    // spriter renderer do xogador
+    private SpriteRenderer spriteRenderer;
+    // Capa na que comprobara o raycast
+    public LayerMask groundLayer;
+    //Audio 
+    public AudioSource AUS_salto;
+    public AudioSource AUS_saltoDoble;
 
-    public Animations currentAnimation;        // Animación que esta sucediendo ahora mismo
-    public Rigidbody2D player;
-    public Animator animator;                // animator
-    public SpriteRenderer spriteRenderer;
+    float fuerzaSalto = 330f;
+    bool salto=true, saltoDoble=true;
 
 
     private void Awake()
@@ -29,6 +40,8 @@ public class Main : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        AUS_salto=GetComponents<AudioSource>()[0];
+        AUS_saltoDoble = GetComponents<AudioSource>()[1];
     }
     // Update is called once per frame
     void Update()
@@ -78,13 +91,33 @@ public class Main : MonoBehaviour
     {
         // Comprobamos que quiere hacer el usuario
         float dirx = Input.GetAxis("Horizontal");
-
-
+        // movimiento lateral
         player.velocity = new Vector2(dirx * 5, player.velocity.y);
 
-        if (Input.GetButtonDown("Jump"))
+
+        //Comprobamos si esta no suelto
+        if (IsGrounded())
         {
-            player.AddForce(new Vector2(0, 250));
+            salto = true;
+            saltoDoble = true;
+        }
+        // se pulsa o boton e ten o salto dispoñible saltamos 
+        if (Input.GetButtonDown("Jump"))
+        {           
+            if (salto)
+            {
+                salto = false;
+                player.AddForce(new Vector2(0f, fuerzaSalto));
+                AUS_salto.Play();
+            }
+            else if (saltoDoble)
+            {
+                saltoDoble = false;
+                player.AddForce(new Vector2(0f, fuerzaSalto * 0.7f));
+                AUS_saltoDoble.Play();
+               
+
+            }
 
         }
     }
@@ -104,4 +137,22 @@ public class Main : MonoBehaviour
 
 
 
+    bool IsGrounded()
+    {
+        // posicion actual do personaje
+        Vector2 position = transform.position;
+        // Direccion hacia a que comproba raycast
+        Vector2 direction = Vector2.down;
+        // distancia a que comproba raycast
+        float distance = 0.9f;
+
+
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, groundLayer);
+        if (hit.collider != null)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
