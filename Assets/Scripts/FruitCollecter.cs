@@ -9,7 +9,6 @@ public class FruitCollecter : MonoBehaviour
         if (collision.CompareTag("Player")) {
         GetComponent<SpriteRenderer>().enabled = false;
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            FindObjectOfType<FruitManager>().TodasFrutasRecogidas();
             Destroy(gameObject, 0.5f);
         }
     }
