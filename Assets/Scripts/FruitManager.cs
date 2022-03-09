@@ -5,13 +5,18 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class FruitManager : MonoBehaviour
 {
+    ChangeEscene cambioEscena;
     public Text FrutasRestantes;
+    private void Start()
+    {
+        cambioEscena = new ChangeEscene();
+    }
     private void Update()
     {
         FrutasRestantes.text = transform.childCount.ToString();
         if (transform.childCount == 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+            cambioEscena.MoveScene(2);
         }
     }
 }
